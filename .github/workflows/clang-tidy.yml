@@ -16,10 +16,6 @@ jobs:
             clang-tidy-url: https://github.com/StMartin81/clang-tools-static-binaries/releases/download/v21.1.8/clang-tidy-21_linux-amd64
             clang-tidy-name: clang-tidy
             name: "Clang-Tidy v21 (Ubuntu 22.04)"
-          - os: windows-latest
-            clang-tidy-url: https://github.com/StMartin81/clang-tools-static-binaries/releases/download/v21.1.8/clang-tidy-21_windows-amd64.exe
-            clang-tidy-name: clang-tidy.exe
-            name: "Clang-Tidy v21 (Windows)"
           - os: ubuntu-22.04
             clang-tidy-url: https://github.com/StMartin81/clang-tools-static-binaries/releases/download/v18.1.8/clang-tidy-18_linux-amd64
             clang-tidy-name: clang-tidy
@@ -42,12 +38,6 @@ jobs:
         shell: bash
 
       - name: Run clang-tidy on main.cpp
-        continue-on-error: true
         run: |
           ./${{ matrix.clang-tidy-name }} src/main.cpp -- -isystem./system_includes
-        shell: bash
-
-      - name: Run clang-tidy on main.cpp with header filter command line option
-        run: |
-          ./${{ matrix.clang-tidy-name }} src/main.cpp --header-filter=.* -- -isystem./system_includes
         shell: bash
