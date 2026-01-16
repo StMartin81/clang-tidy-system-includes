@@ -1,0 +1,53 @@
+name: Clang-Tidy Check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  clang-tidy:
+    name: ${{ matrix.name }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-22.04
+            clang-tidy-url: https://github.com/StMartin81/clang-tools-static-binaries/releases/download/v21.1.8/clang-tidy-21_linux-amd64
+            clang-tidy-name: clang-tidy
+            name: "Clang-Tidy v21 (Ubuntu 22.04)"
+          - os: windows-latest
+            clang-tidy-url: https://github.com/StMartin81/clang-tools-static-binaries/releases/download/v21.1.8/clang-tidy-21_windows-amd64.exe
+            clang-tidy-name: clang-tidy.exe
+            name: "Clang-Tidy v21 (Windows)"
+          - os: ubuntu-22.04
+            clang-tidy-url: https://github.com/StMartin81/clang-tools-static-binaries/releases/download/v18.1.8/clang-tidy-18_linux-amd64
+            clang-tidy-name: clang-tidy
+            name: "Clang-Tidy v18 (Ubuntu 22.04)"
+
+    runs-on: ${{ matrix.os }}
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download clang-tidy
+        run: |
+          if [ "${{ runner.os }}" = "Linux" ]; then
+            wget -O clang-tidy "${{ matrix.clang-tidy-url }}"
+            chmod +x clang-tidy
+          else
+            powershell -Command "Invoke-WebRequest -Uri '${{ matrix.clang-tidy-url }}' -OutFile clang-tidy.exe"
+          fi
+        shell: bash
+
+      - name: Run clang-tidy on main.cpp
+        continue-on-error: true
+        run: |
+          ./${{ matrix.clang-tidy-name }} src/main.cpp -- -isystem./system_includes
+        shell: bash
+
+      - name: Run clang-tidy on main.cpp with header filter command line option
+        run: |
+          ./${{ matrix.clang-tidy-name }} src/main.cpp --header-filter=.* -- -isystem./system_includes
+        shell: bash

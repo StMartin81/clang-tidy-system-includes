@@ -1,0 +1,58 @@
+Checks: "
+  bugprone-*,
+  -bugprone-branch-clone,
+  -bugprone-easily-swappable-parameters,
+  -bugprone-reserved-identifier,
+  -bugprone-switch-missing-default-case,
+  cert-*,
+  -cert-dcl37-c,
+  -cert-dcl51-cpp,
+  clang-*,
+  -clang-analyzer-security.insecureAPI.DeprecatedOrUnsafeBufferHandling,
+  cppcoreguidelines-*,
+  -cppcoreguidelines-pro-type-reinterpret-cast,
+  google-*,
+  -google-readability-todo,
+  hicpp-*,
+  linuxkernel-*,
+  llvm-*,
+  -llvm-include-order,
+  -llvm-header-guard,
+  -llvm-else-after-return,
+  misc-*,
+  -misc-include-cleaner,
+  -misc-use-anonymous-namespace,
+  performance-*,
+  -performance-no-int-to-ptr,
+  readability-identifier-naming,
+  readability-magic-numbers,
+  "
+CheckOptions:
+  - key: readability-identifier-naming.ClassCase
+    value: CamelCase
+  - key: readability-identifier-naming.FunctionCase
+    value: lower_case
+  - key: readability-identifier-naming.VariableCase
+    value: lower_case
+  - key: readability-identifier-naming.PrivateMemberCase
+    value: lower_case
+  - key: readability-identifier-naming.ConstantCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.MacroCase
+    value: UPPER_CASE
+  - key: readability-identifier-naming.StaticVariableCase
+    value: lower_case
+  - key: readability-identifier-naming.StaticVariablePrefix
+    value: "_"
+  - key: readability-identifier-naming.StaticConstantCase
+    value: lower_case
+  - key: readability-identifier-naming.StaticConstantPrefix
+    value: "_"
+  - key: performance-unnecessary-value-param.IncludeStyle
+    value: llvm
+  - key: cppcoreguidelines-pro-bounds-pointer-arithmetic.NatTypes
+    value: "size_t;ssize_t;ptrdiff_t"
+WarningsAsErrors: "*"
+HeaderFilterRegex: ".*"
+SystemHeaders: false
+FormatStyle: google
